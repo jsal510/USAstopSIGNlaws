@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>USA Stop Sign Laws</title>
   <style>
-    /* Force Arial Narrow on everything */
+    /* Force Arial Narrow everywhere */
     html, body, h1, h1 *, label, label *, select, option, strong {
       font-family: "Arial Narrow", Arial, sans-serif !important;
       font-weight: bold !important;
@@ -13,9 +13,9 @@
 
     body {
       max-width: 900px;
-      margin: 15px auto;
-      padding: 5px;
-      line-height: 1.2;
+      margin: 10px auto; /* Your preferred 10px vertical */
+      padding: 8px;
+      line-height: 1.3;
       background: #e8e8e8;
       color: #333;
     }
@@ -27,17 +27,17 @@
     }
     .dropdown-container {
       text-align: center;
-      margin: 30px 0 35px;
+      margin: 15px 0 20px;
     }
     label {
       font-size: .8em;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     select {
       width: 80%;
       max-width: 500px;
-      padding: 7px;
+      padding: 8px;
       font-size: .7em;
       border-radius: 8px;
       border: 2px solid #ccc;
@@ -49,32 +49,30 @@
     }
     #result {
       background: white;
-      padding: 10px;
+      padding: 12px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       display: none;
-      text-align: left;
     }
     #stateHeader {
       font-size: 1.2em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: #0066cc;
       border-bottom: 3px solid #0066cc;
-      padding-bottom: 10px;
-      word-wrap: break-word;
+      padding-bottom: 8px;
     }
     #stateHeader span.pop {
       font-size: 0.5em;
       color: #444;
     }
     .section {
-      margin: 25px 0;
+      margin: 12px 0; /* Tight uniform spacing */
     }
     .label {
-      color: #444;
       font-size: .8em;
+      color: #444;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
     .value {
       margin-left: 20px;
@@ -85,7 +83,7 @@
       border-left: 6px solid #0066cc;
       border-radius: 8px;
       font-size: .7em;
-      line-height: 1.5;
+      line-height: 1.4;
     }
     .exact-wording .value {
       font-size: 0.7em;
@@ -94,9 +92,14 @@
     .stop-header {
       font-size: 1em;
       text-transform: uppercase;
-      display: block;
-      margin: 30px 0 10px 0;
+      margin: 16px 0 10px 0;
       color: #222;
+    }
+    .divider {
+      height: 3px;
+      background: #0066cc;
+      margin: 16px 0 12px 0;
+      border: none;
     }
     @media (max-width: 768px) {
       select { width: 90%; padding: 10px; font-size: .8em; }
@@ -123,6 +126,9 @@
       <span class="label">STATUTE:</span>
       <span class="value" id="statuteName"></span>
     </div>
+
+    <!-- Solid blue bar after Statute -->
+    <hr class="divider">
 
     <div class="section">
       <span class="stop-header">STOP LOCATION:</span>
@@ -172,9 +178,8 @@
           }
           parsed.push(field.trim());
           return parsed;
-        }).filter(row => row.length >= 7 && row[3]); // Safer filter
+        }).filter(row => row.length >= 7 && row[3]);
 
-        // Sort alphabetically by state name
         data.sort((a, b) => a[3].localeCompare(b[3]));
 
         const select = document.getElementById('stateSelect');
@@ -209,6 +214,3 @@
 
 </body>
 </html>
-
-
-
