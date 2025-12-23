@@ -8,26 +8,26 @@
     body {
       font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
       max-width: 900px;
-      margin: 15px auto; /* Tighter top/bottom */
+      margin: 15px auto;
       padding: 10px;
       line-height: 1.5;
-      background: #e8e8e8; /* Slightly darker grey */
+      background: #e8e8e8;
       color: #333;
     }
     h1 {
       text-align: center;
       color: #222;
-      font-size: 1.25em; /* As requested */
+      font-size: 1.25em;
       margin-bottom: 25px;
       font-weight: bold;
     }
     .dropdown-container {
       text-align: center;
-      margin: 30px 0 35px; /* Tighter */
+      margin: 30px 0 35px;
     }
     label {
       font-weight: bold;
-      font-size: 1.1em; /* Smaller */
+      font-size: 1.1em;
       display: block;
       margin-bottom: 10px;
     }
@@ -35,7 +35,7 @@
       width: 80%;
       max-width: 500px;
       padding: 14px;
-      font-size: 1.1em; /* Dropdown text smaller */
+      font-size: 1.1em;
       font-weight: bold;
       border-radius: 8px;
       border: 2px solid #ccc;
@@ -44,7 +44,7 @@
     }
     #result {
       background: white;
-      padding: 20px; /* Slightly tighter */
+      padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       display: none;
@@ -60,11 +60,11 @@
       font-weight: bold;
     }
     #stateHeader span.pop {
-      font-size: 0.9em; /* Population slightly smaller */
+      font-size: 0.9em;
       color: #444;
     }
     .section {
-      margin: 25px 0; /* Tighter vertical spacing */
+      margin: 25px 0;
     }
     .label {
       font-weight: bold;
@@ -74,7 +74,7 @@
       margin-bottom: 10px;
     }
     .value {
-      margin-left: 20px; /* Indent for the 3 scenarios */
+      margin-left: 20px;
       display: block;
       font-style: italic;
       background: #f0f8ff;
@@ -85,13 +85,13 @@
       line-height: 1.5;
     }
     .exact-wording .value {
-      font-size: 1.0em; /* Smaller for Exact Wording */
+      font-size: 1.0em;
       font-style: normal;
     }
     .stop-header {
       font-size: 1.4em;
       font-weight: bold;
-      text-transform: uppercase; /* All caps */
+      text-transform: uppercase;
       display: block;
       margin: 30px 0 15px 0;
       color: #222;
@@ -115,6 +115,7 @@
   </div>
 
   <div id="result">
+    <!-- This is EMPTY on load — JavaScript fills it when you select a state -->
     <div id="stateHeader"></div>
     
     <div class="section">
@@ -189,6 +190,7 @@
       }
       const row = data[index];
 
+      // This line creates the correct header — no placeholders
       document.getElementById('stateHeader').innerHTML = 
         `\( {row[3]} - <span class="pop"> \){row[2]} USA Population</span>`;
 
