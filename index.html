@@ -32,6 +32,7 @@
       margin-bottom: 10px;
     }
     select {
+      font-family: "Arial Narrow", Arial, sans-serif !important; /* Force font */
       width: 80%;
       max-width: 500px;
       padding: 14px;
@@ -41,6 +42,12 @@
       border: 2px solid #ccc;
       background: white;
       box-sizing: border-box;
+      appearance: none; /* Remove default arrow styling on some browsers */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    select option {
+      font-family: "Arial Narrow", Arial, sans-serif !important; /* Force options font */
     }
     #result {
       background: white;
