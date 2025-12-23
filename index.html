@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
     h1 {
       text-align: center;
       color: #222;
-      font-size: 1.5em; /* Smaller but bold */
+      font-size: 1.5em;
       margin-bottom: 30px;
       font-weight: bold;
     }
@@ -106,11 +107,6 @@
     </div>
     
     <div class="section">
-      <span class="label">Exact Wording:</span>
-      <span class="value" id="exactWording"></span>
-    </div>
-    
-    <div class="section">
       <strong style="font-size: 1.4em; display: block; margin-bottom: 15px;">
         Stop location where there is:
       </strong>
@@ -130,10 +126,14 @@
       <span class="label">Otherwise (No painted line or crosswalk):</span>
       <span class="value" id="noLine"></span>
     </div>
+
+    <div class="section">
+      <span class="label">Exact Wording:</span>
+      <span class="value" id="exactWording"></span>
+    </div>
   </div>
 
   <script>
-    // This link works if sheet is "Anyone with the link can view" (no publish needed)
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo8C9BcTbj974aAidWJoxLe9MWsIy2a0jHo16FnUMhSak8yGx0qRAYiEc85QB043UJV6uBBJ4KNMNc/pub?gid=425856129&single=true&output=csv';
 
     let data = [];
@@ -156,19 +156,15 @@
           }
           parsed.push(field.trim());
           return parsed;
-        }).filter(row => row.length >= 7 && row[3]); // State in column D (index 3)
+        }).filter(row => row.length >= 9 && row[3]);
 
         const select = document.getElementById('stateSelect');
         data.forEach((row, index) => {
           const option = document.createElement('option');
           option.value = index;
-          option.textContent = row[3]; // State
+          option.textContent = row[3];
           select.appendChild(option);
         });
-      })
-      .catch(err => {
-        console.error(err);
-        document.body.innerHTML += '<p style="color:red;text-align:center;">Data failed to load. Make sure the sheet is shared "Anyone with the link".</p>';
       });
 
     document.getElementById('stateSelect').addEventListener('change', function() {
@@ -179,7 +175,8 @@
       }
       const row = data[index];
 
-      document.getElementById('stateHeader').textContent = `\( {row[3]} ( \){row[2]})`;
+      // Your requested format
+      document.getElementById('stateHeader').textContent = `\( {row[3]} ( \){row[2]} USA population)`;
 
       document.getElementById('statuteName').textContent = row[4] || 'Not specified';
       document.getElementById('exactWording').textContent = row[5] || 'Not specified';
