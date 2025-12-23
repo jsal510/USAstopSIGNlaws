@@ -17,13 +17,13 @@
     h1 {
       text-align: center;
       color: #222;
-      font-size: 1.8em;
+      font-size: 1.5em; /* Smaller but bold */
       margin-bottom: 30px;
       font-weight: bold;
     }
     .dropdown-container {
       text-align: center;
-      margin: 20px 0 40px;
+      margin: 40px 0;
     }
     label {
       font-weight: bold;
@@ -51,7 +51,7 @@
       text-align: left;
     }
     #stateHeader {
-      font-size: 1.9em;
+      font-size: 1.8em;
       margin-bottom: 25px;
       color: #0066cc;
       border-bottom: 3px solid #0066cc;
@@ -80,51 +80,9 @@
       font-size: 1.15em;
       line-height: 1.5;
     }
-
-    /* Mobile optimizations */
     @media (max-width: 768px) {
-      body {
-        margin: 10px auto;
-        padding: 10px;
-      }
-      h1 {
-        font-size: 1.7em;
-      }
-      label {
-        font-size: 1.4em;
-      }
-      select {
-        width: 90%;
-        padding: 18px;
-        font-size: 1.3em;
-      }
-      #result {
-        padding: 20px;
-      }
-      #stateHeader {
-        font-size: 1.7em;
-      }
-      .label {
-        font-size: 1.35em;
-      }
-      .value {
-        margin-left: 0;
-        padding: 20px;
-        font-size: 1.2em;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5em;
-      }
-      #stateHeader {
-        font-size: 1.5em;
-      }
-      .value {
-        font-size: 1.15em;
-        padding: 18px;
-      }
+      select { width: 90%; padding: 18px; font-size: 1.3em; }
+      .value { margin-left: 0; padding: 20px; font-size: 1.2em; }
     }
   </style>
 </head>
@@ -144,7 +102,12 @@
     
     <div class="section">
       <span class="label">STATUTE:</span>
-      <span class="value" id="statute"></span>
+      <span class="value" id="statuteName"></span>
+    </div>
+    
+    <div class="section">
+      <span class="label">Exact Wording:</span>
+      <span class="value" id="exactWording"></span>
     </div>
     
     <div class="section">
@@ -170,7 +133,8 @@
   </div>
 
   <script>
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo8C9BcTbj974aAidWJoxLe9MWsIy2a0jHo16FnUMhSak8yGx0qRAYiEc85QB043UJV6uBBJ4KNMNc/pub?gid=537114464&single=true&output=csv';
+    // This link works if sheet is "Anyone with the link can view" (no publish needed)
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo8C9BcTbj974aAidWJoxLe9MWsIy2a0jHo16FnUMhSak8yGx0qRAYiEc85QB043UJV6uBBJ4KNMNc/pub?gid=425856129&single=true&output=csv';
 
     let data = [];
 
@@ -178,40 +142,33 @@
       .then(response => response.text())
       .then(text => {
         const rows = text.split('\n');
-        data = rows.slice(2)
-                   .map(row => {
-                     const parsed = [];
-                     let field = '';
-                     let inQuotes = false;
-                     for (let i = 0; i < row.length; i++) {
-                       const char = row[i];
-                       if (char === '"') {
-                         inQuotes = !inQuotes;
-                       } else if (char === ',' && !inQuotes) {
-                         parsed.push(field.trim());
-                         field = '';
-                       } else {
-                         field += char;
-                       }
-                     }
-                     parsed.push(field.trim());
-                     return parsed;
-                   })
-                   .filter(row => row.length > 1 && row[2]);
-
-        data.sort((a, b) => a[2].localeCompare(b[2]));
+        data = rows.map(row => {
+          const parsed = [];
+          let field = '';
+          let inQuotes = false;
+          for (let i = 0; i < row.length; i++) {
+            const char = row[i];
+            if (char === '"') inQuotes = !inQuotes;
+            else if (char === ',' && !inQuotes) {
+              parsed.push(field.trim());
+              field = '';
+            } else field += char;
+          }
+          parsed.push(field.trim());
+          return parsed;
+        }).filter(row => row.length >= 7 && row[3]); // State in column D (index 3)
 
         const select = document.getElementById('stateSelect');
         data.forEach((row, index) => {
           const option = document.createElement('option');
           option.value = index;
-          option.textContent = row[2];
+          option.textContent = row[3]; // State
           select.appendChild(option);
         });
       })
       .catch(err => {
-        console.error('Error:', err);
-        alert('Could not load data. Check if the sheet is published.');
+        console.error(err);
+        document.body.innerHTML += '<p style="color:red;text-align:center;">Data failed to load. Make sure the sheet is shared "Anyone with the link".</p>';
       });
 
     document.getElementById('stateSelect').addEventListener('change', function() {
@@ -220,16 +177,15 @@
         document.getElementById('result').style.display = 'none';
         return;
       }
-
       const row = data[index];
 
-      document.getElementById('stateHeader').textContent = 
-        `\( {row[2]} ( \){row[0]} population, ${row[1]})`;
+      document.getElementById('stateHeader').textContent = `\( {row[3]} ( \){row[2]})`;
 
-      document.getElementById('statute').textContent = row[4] || 'Not specified';
-      document.getElementById('paintedLine').textContent = row[5] || 'Not specified';
-      document.getElementById('crosswalk').textContent = row[6] || 'Not specified';
-      document.getElementById('noLine').textContent = row[7] || 'Not specified';
+      document.getElementById('statuteName').textContent = row[4] || 'Not specified';
+      document.getElementById('exactWording').textContent = row[5] || 'Not specified';
+      document.getElementById('paintedLine').textContent = row[6] || 'Not specified';
+      document.getElementById('crosswalk').textContent = row[7] || 'Not specified';
+      document.getElementById('noLine').textContent = row[8] || 'Not specified';
 
       document.getElementById('result').style.display = 'block';
     });
