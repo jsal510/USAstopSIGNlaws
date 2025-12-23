@@ -15,14 +15,14 @@
       max-width: 900px;
       margin: 15px auto;
       padding: 10px;
-      line-height: 1.5;
+      line-height: 1.2;
       background: #e8e8e8;
       color: #333;
     }
     h1 {
       text-align: center;
       color: #222;
-      font-size: 1.4em;
+      font-size: 1.2em;
       margin-bottom: 25px;
     }
     .dropdown-container {
@@ -30,7 +30,7 @@
       margin: 30px 0 35px;
     }
     label {
-      font-size: 1.1em;
+      font-size: .8em;
       display: block;
       margin-bottom: 10px;
     }
@@ -38,7 +38,7 @@
       width: 80%;
       max-width: 500px;
       padding: 14px;
-      font-size: .9em;
+      font-size: .7em;
       border-radius: 8px;
       border: 2px solid #ccc;
       background: white;
@@ -56,7 +56,7 @@
       text-align: left;
     }
     #stateHeader {
-      font-size: 1.5em;
+      font-size: 1.2em;
       margin-bottom: 20px;
       color: #0066cc;
       border-bottom: 3px solid #0066cc;
@@ -64,7 +64,7 @@
       word-wrap: break-word;
     }
     #stateHeader span.pop {
-      font-size: 0.7em;
+      font-size: 0.5em;
       color: #444;
     }
     .section {
@@ -72,7 +72,7 @@
     }
     .label {
       color: #444;
-      font-size: 1.1em;
+      font-size: .8em;
       display: block;
       margin-bottom: 10px;
     }
@@ -84,7 +84,7 @@
       padding: 16px;
       border-left: 6px solid #0066cc;
       border-radius: 8px;
-      font-size: 1em;
+      font-size: .7em;
       line-height: 1.5;
     }
     .exact-wording .value {
@@ -92,16 +92,16 @@
       font-style: normal;
     }
     .stop-header {
-      font-size: 1.3em;
+      font-size: 1em;
       text-transform: uppercase;
       display: block;
       margin: 30px 0 15px 0;
       color: #222;
     }
     @media (max-width: 768px) {
-      select { width: 90%; padding: 16px; font-size: 1.1em; }
-      .value { margin-left: 10px; padding: 18px; font-size: 1.1em; }
-      .exact-wording .value { font-size: 1.1em; }
+      select { width: 90%; padding: 16px; font-size: .8em; }
+      .value { margin-left: 10px; padding: 18px; font-size: .8em; }
+      .exact-wording .value { font-size: .8em; }
     }
   </style>
 </head>
@@ -125,11 +125,11 @@
     </div>
 
     <div class="section">
-      <span class="stop-header">* STOP LOCATION:</span>
+      <span class="stop-header">STOP LOCATION:</span>
     </div>
 
     <div class="section">
-      <span class="label">** Painted Stop Line:</span>
+      <span class="label">* Painted Stop Line:</span>
       <span class="value" id="paintedLine"></span>
     </div>
 
@@ -139,7 +139,7 @@
     </div>
 
     <div class="section">
-      <span class="label">** STOP SIGN ONLY:</span>
+      <span class="label">*** STOP SIGN ONLY:</span>
       <span class="value" id="noLine"></span>
     </div>
 
@@ -209,3 +209,4 @@
 
 </body>
 </html>
+
