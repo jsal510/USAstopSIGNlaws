@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USA Stop Sign Controlled Intersection Laws by State</title>
+  <style>
+    body {
+      font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 15px;
+      line-height: 1.6;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+    .dropdown-container {
+      text-align: center;
+      margin: 20px 0 40px;
+    }
+    label {
+      font-weight: bold;
+      font-size: 1.3em;
+      display: block;
+      margin-bottom: 10px;
+    }
+    select {
+      width: 80%;
+      max-width: 500px;
+      padding: 16px;
+      font-size: 1.2em;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      background: white;
+      box-sizing: border-box;
+    }
+    #result {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: none;
+      text-align: left;
+    }
+    #stateHeader {
+      font-size: 1.9em;
+      margin-bottom: 25px;
+      color: #0066cc;
+      border-bottom: 3px solid #0066cc;
+      padding-bottom: 12px;
+      word-wrap: break-word;
+      font-weight: bold;
+    }
+    .section {
+      margin: 30px 0;
+    }
+    .label {
+      font-weight: bold;
+      color: #444;
+      font-size: 1.3em;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .value {
+      margin-left: 10px;
+      display: block;
+      font-style: italic;
+      background: #f0f8ff;
+      padding: 18px;
+      border-left: 6px solid #0066cc;
+      border-radius: 8px;
+      font-size: 1.15em;
+      line-height: 1.5;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      body {
+        margin: 10px auto;
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.7em;
+      }
+      label {
+        font-size: 1.4em;
+      }
+      select {
+        width: 90%;
+        padding: 18px;
+        font-size: 1.3em;
+      }
+      #result {
+        padding: 20px;
+      }
+      #stateHeader {
+        font-size: 1.7em;
+      }
+      .label {
+        font-size: 1.35em;
+      }
+      .value {
+        margin-left: 0;
+        padding: 20px;
+        font-size: 1.2em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5em;
+      }
+      #stateHeader {
+        font-size: 1.5em;
+      }
+      .value {
+        font-size: 1.15em;
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><strong>USA Stop Sign Controlled Intersection Laws by State</strong></h1>
+
+  <div class="dropdown-container">
+    <label for="stateSelect"><strong>Select a State:</strong></label>
+    <select id="stateSelect">
+      <option value="">-- Choose a state --</option>
+    </select>
+  </div>
+
+  <div id="result">
+    <div id="stateHeader"></div>
+    
+    <div class="section">
+      <span class="label">STATUTE:</span>
+      <span class="value" id="statute"></span>
+    </div>
+    
+    <div class="section">
+      <strong style="font-size: 1.4em; display: block; margin-bottom: 15px;">
+        Stop location where there is:
+      </strong>
+    </div>
+    
+    <div class="section">
+      <span class="label">Painted Stop Line:</span>
+      <span class="value" id="paintedLine"></span>
+    </div>
+    
+    <div class="section">
+      <span class="label">Or Crosswalk:</span>
+      <span class="value" id="crosswalk"></span>
+    </div>
+    
+    <div class="section">
+      <span class="label">Otherwise (No painted line or crosswalk):</span>
+      <span class="value" id="noLine"></span>
+    </div>
+  </div>
+
+  <script>
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo8C9BcTbj974aAidWJoxLe9MWsIy2a0jHo16FnUMhSak8yGx0qRAYiEc85QB043UJV6uBBJ4KNMNc/pub?gid=537114464&single=true&output=csv';
+
+    let data = [];
+
+    fetch(CSV_URL)
+      .then(response => response.text())
+      .then(text => {
+        const rows = text.split('\n');
+        data = rows.slice(2)
+                   .map(row => {
+                     const parsed = [];
+                     let field = '';
+                     let inQuotes = false;
+                     for (let i = 0; i < row.length; i++) {
+                       const char = row[i];
+                       if (char === '"') {
+                         inQuotes = !inQuotes;
+                       } else if (char === ',' && !inQuotes) {
+                         parsed.push(field.trim());
+                         field = '';
+                       } else {
+                         field += char;
+                       }
+                     }
+                     parsed.push(field.trim());
+                     return parsed;
+                   })
+                   .filter(row => row.length > 1 && row[2]);
+
+        data.sort((a, b) => a[2].localeCompare(b[2]));
+
+        const select = document.getElementById('stateSelect');
+        data.forEach((row, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.textContent = row[2];
+          select.appendChild(option);
+        });
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        alert('Could not load data. Check if the sheet is published.');
+      });
+
+    document.getElementById('stateSelect').addEventListener('change', function() {
+      const index = this.value;
+      if (index === '') {
+        document.getElementById('result').style.display = 'none';
+        return;
+      }
+
+      const row = data[index];
+
+      document.getElementById('stateHeader').textContent = 
+        `\( {row[2]} ( \){row[0]} population, ${row[1]})`;
+
+      document.getElementById('statute').textContent = row[4] || 'Not specified';
+      document.getElementById('paintedLine').textContent = row[5] || 'Not specified';
+      document.getElementById('crosswalk').textContent = row[6] || 'Not specified';
+      document.getElementById('noLine').textContent = row[7] || 'Not specified';
+
+      document.getElementById('result').style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
