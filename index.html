@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,7 +155,7 @@
           }
           parsed.push(field.trim());
           return parsed;
-        }).filter(row => row.length >= 9 && row[3]);
+        }).filter(row => row.length >= 9 && row[3]); // State in column D
 
         const select = document.getElementById('stateSelect');
         data.forEach((row, index) => {
@@ -165,18 +164,21 @@
           option.textContent = row[3];
           select.appendChild(option);
         });
-      });
+      })
+      .catch(err => console.error('Fetch error:', err));
 
+    // This is the key part that was missing/broken
     document.getElementById('stateSelect').addEventListener('change', function() {
       const index = this.value;
-      if (index === '') {
+      if (index === '' || index === null) {
         document.getElementById('result').style.display = 'none';
         return;
       }
+
       const row = data[index];
 
-      // Your requested format
-      document.getElementById('stateHeader').textContent = `\( {row[3]} ( \){row[2]} USA population)`;
+      // Exact header you want
+      document.getElementById('stateHeader').textContent = `${row[3]} - ${row[2]} USA Population`;
 
       document.getElementById('statuteName').textContent = row[4] || 'Not specified';
       document.getElementById('exactWording').textContent = row[5] || 'Not specified';
