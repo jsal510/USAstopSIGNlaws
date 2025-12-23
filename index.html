@@ -115,27 +115,27 @@
   </div>
 
   <div id="result">
-    <div id="stateHeader"></div> <!-- EMPTY — JS fills this -->
+    <div id="stateHeader"></div>
 
     <div class="section">
       <span class="label">STATUTE:</span>
       <span class="value" id="statuteName"></span>
     </div>
-    
+
     <div class="section">
       <span class="stop-header">STOP LOCATION WHERE THERE IS:</span>
     </div>
-    
+
     <div class="section">
       <span class="label">Painted Stop Line:</span>
       <span class="value" id="paintedLine"></span>
     </div>
-    
+
     <div class="section">
       <span class="label">Or Crosswalk:</span>
       <span class="value" id="crosswalk"></span>
     </div>
-    
+
     <div class="section">
       <span class="label">Otherwise (No painted line or crosswalk):</span>
       <span class="value" id="noLine"></span>
@@ -190,7 +190,7 @@
       const row = data[index];
 
       document.getElementById('stateHeader').innerHTML = 
-        `\( {row[3]} - <span class="pop"> \){row[2]} USA Population</span>`;
+        row[3] + ' - <span class="pop">' + row[2] + ' USA Population</span>';
 
       document.getElementById('statuteName').textContent = row[4] || 'Not specified';
       document.getElementById('exactWording').textContent = row[5] || 'Not specified';
