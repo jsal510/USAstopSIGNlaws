@@ -115,9 +115,8 @@
   </div>
 
   <div id="result">
-    <!-- This is EMPTY on load — JavaScript fills it when you select a state -->
-    <div id="stateHeader"></div>
-    
+    <div id="stateHeader"></div> <!-- EMPTY — JS fills this -->
+
     <div class="section">
       <span class="label">STATUTE:</span>
       <span class="value" id="statuteName"></span>
@@ -190,7 +189,6 @@
       }
       const row = data[index];
 
-      // This line creates the correct header — no placeholders
       document.getElementById('stateHeader').innerHTML = 
         `\( {row[3]} - <span class="pop"> \){row[2]} USA Population</span>`;
 
