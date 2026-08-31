@@ -16,13 +16,13 @@
       margin: 10px auto;
       padding: 8px;
       line-height: 1.25;
-      background: #e8e8e8;
+      background: #000;
       color: #333;
     }
 
     h1 {
       text-align: center;
-      color: #222;
+      color: #fff;
       font-size: 1.2em;
       margin: 12px 0 14px;
     }
@@ -36,12 +36,16 @@
       width: 90%;
       max-width: 650px;
       padding: 12px 14px;
-      font-size: .85em;
+      font-size: .72em;
       border-radius: 12px;
       border: 2px solid #222;
       background: white;
       color: #222;
       box-sizing: border-box;
+    }
+
+    option {
+      font-size: .9em;
     }
 
     #result {
@@ -125,8 +129,12 @@
 
       select {
         width: 94%;
-        font-size: .8em;
+        font-size: .68em;
         padding: 11px 12px;
+      }
+
+      option {
+        font-size: .85em;
       }
 
       #result {
@@ -216,18 +224,10 @@
           } else {
             inQuotes = !inQuotes;
           }
-        }
-
-        else if (char === ',' && !inQuotes) {
+        } else if (char === ',' && !inQuotes) {
           row.push(field.trim());
           field = '';
-        }
-
-        else if (
-          (char === '\n' || char === '\r') &&
-          !inQuotes
-        ) {
-
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
           if (char === '\r' && nextChar === '\n') {
             i++;
           }
@@ -240,9 +240,7 @@
 
           row = [];
           field = '';
-        }
-
-        else {
+        } else {
           field += char;
         }
       }
@@ -259,7 +257,6 @@
     fetch(CSV_URL)
       .then(response => response.text())
       .then(text => {
-
         data = parseCSV(text)
           .filter(row => row.length >= 9 && row[3]);
 
@@ -267,17 +264,12 @@
           a[3].localeCompare(b[3])
         );
 
-        const select =
-          document.getElementById('stateSelect');
+        const select = document.getElementById('stateSelect');
 
         data.forEach((row, index) => {
-
-          const option =
-            document.createElement('option');
-
+          const option = document.createElement('option');
           option.value = index;
           option.textContent = row[3];
-
           select.appendChild(option);
         });
       });
@@ -289,42 +281,35 @@
         const index = this.value;
 
         if (index === '') {
-          document.getElementById('result')
-            .style.display = 'none';
           return;
         }
 
         const row = data[index];
 
-        document.getElementById('stateHeader')
-          .innerHTML =
+        document.getElementById('stateHeader').innerHTML =
           row[3] +
           ' <span class="pop">' +
           row[2] +
           '</span>';
 
-        document.getElementById('statuteName')
-          .textContent =
+        document.getElementById('statuteName').textContent =
           row[4] || 'Not specified';
 
-        document.getElementById('exactWording')
-          .textContent =
+        document.getElementById('exactWording').textContent =
           row[5] || 'Not specified';
 
-        document.getElementById('paintedLine')
-          .textContent =
+        document.getElementById('paintedLine').textContent =
           row[6] || 'Not specified';
 
-        document.getElementById('crosswalk')
-          .textContent =
+        document.getElementById('crosswalk').textContent =
           row[7] || 'Not specified';
 
-        document.getElementById('noLine')
-          .textContent =
+        document.getElementById('noLine').textContent =
           row[8] || 'Not specified';
 
-        document.getElementById('result')
-          .style.display = 'block';
+        document.getElementById('result').style.display = 'block';
+
+        this.value = '';
       });
   </script>
 
