@@ -4,122 +4,160 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>USA Stop Sign Laws</title>
+
   <style>
-    /* Force Arial Narrow everywhere */
-    html, body, h1, h1 *, label, label *, select, option, strong {
+    html, body, h1, select, option, strong {
       font-family: "Arial Narrow", Arial, sans-serif !important;
       font-weight: bold !important;
     }
 
     body {
       max-width: 900px;
-      margin: 10px auto; /* Your preferred 10px vertical */
+      margin: 10px auto;
       padding: 8px;
-      line-height: 1.3;
+      line-height: 1.25;
       background: #e8e8e8;
       color: #333;
     }
+
     h1 {
       text-align: center;
       color: #222;
       font-size: 1.2em;
-      margin-bottom: 12px;
+      margin: 12px 0 14px;
     }
+
     .dropdown-container {
       text-align: center;
-      margin: 15px 0 20px;
+      margin: 0 0 16px;
     }
-    label {
-      font-size: .8em;
-      display: block;
-      margin-bottom: 6px;
-    }
+
     select {
-      width: 80%;
-      max-width: 500px;
-      padding: 8px;
-      font-size: .7em;
-      border-radius: 8px;
-      border: 2px solid #ccc;
+      width: 90%;
+      max-width: 650px;
+      padding: 12px 14px;
+      font-size: .85em;
+      border-radius: 12px;
+      border: 2px solid #222;
       background: white;
+      color: #222;
       box-sizing: border-box;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
     }
+
     #result {
       background: white;
       padding: 12px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       display: none;
     }
+
     #stateHeader {
-      font-size: 1.2em;
-      margin-bottom: 12px;
+      font-size: 1.15em;
+      margin-bottom: 10px;
       color: #0066cc;
       border-bottom: 3px solid #0066cc;
-      padding-bottom: 8px;
+      padding-bottom: 7px;
     }
+
     #stateHeader span.pop {
       font-size: 0.5em;
       color: #444;
     }
+
     .section {
-      margin: 12px 0; /* Tight uniform spacing */
+      margin: 9px 0;
     }
+
     .label {
-      font-size: .8em;
-      color: #444;
+      font-size: .76em;
+      color: #333;
       display: block;
       margin-bottom: 4px;
     }
+
     .value {
-      margin-left: 20px;
       display: block;
-      font-style: italic;
-      background: #f0f8ff;
-      padding: 8px;
-      border-left: 6px solid #0066cc;
+      background: #0a78c8;
+      color: white;
+      padding: 8px 10px;
       border-radius: 8px;
-      font-size: .7em;
-      line-height: 1.4;
+      font-size: .72em;
+      line-height: 1.3;
+      font-style: italic;
     }
-    .exact-wording .value {
-      font-size: 0.7em;
-      font-style: normal;
-    }
+
     .stop-header {
-      font-size: 1em;
+      font-size: .92em;
       text-transform: uppercase;
-      margin: 16px 0 10px 0;
+      margin: 11px 0 6px;
       color: #222;
+      display: block;
     }
+
     .divider {
       height: 3px;
       background: #0066cc;
-      margin: 16px 0 12px 0;
+      margin: 11px 0 9px;
       border: none;
     }
+
+    .exact-wording {
+      margin-top: 10px;
+    }
+
+    .exact-wording .value {
+      font-size: .59em;
+      line-height: 1.25;
+      font-style: normal;
+      padding: 7px 9px;
+    }
+
     @media (max-width: 768px) {
-      select { width: 90%; padding: 10px; font-size: .8em; }
-      .value { margin-left: 10px; padding: 10px; font-size: .8em; }
-      .exact-wording .value { font-size: .8em; }
+      body {
+        padding: 7px;
+      }
+
+      h1 {
+        font-size: 1.15em;
+        margin-bottom: 12px;
+      }
+
+      select {
+        width: 94%;
+        font-size: .8em;
+        padding: 11px 12px;
+      }
+
+      #result {
+        padding: 11px;
+      }
+
+      .value {
+        font-size: .76em;
+        padding: 8px 9px;
+      }
+
+      .exact-wording .value {
+        font-size: .58em;
+        line-height: 1.23;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <h1><strong>USA Stop Sign Laws</strong></h1>
+  <h1>USA Stop Sign Laws</h1>
 
   <div class="dropdown-container">
-    <label for="stateSelect"><strong>Select a State:</strong></label>
     <select id="stateSelect">
-      <option value="">-- Choose a state --</option>
+      <option value="">Select a State</option>
     </select>
   </div>
 
   <div id="result">
+
     <div id="stateHeader"></div>
 
     <div class="section">
@@ -127,7 +165,6 @@
       <span class="value" id="statuteName"></span>
     </div>
 
-    <!-- Solid blue bar after Statute -->
     <hr class="divider">
 
     <div class="section">
@@ -135,17 +172,17 @@
     </div>
 
     <div class="section">
-      <span class="label">* Painted Stop Line:</span>
+      <span class="label">1. Painted Stop Line:</span>
       <span class="value" id="paintedLine"></span>
     </div>
 
     <div class="section">
-      <span class="label">** Crosswalk:</span>
+      <span class="label">2. Crosswalk:</span>
       <span class="value" id="crosswalk"></span>
     </div>
 
     <div class="section">
-      <span class="label">*** STOP SIGN ONLY:</span>
+      <span class="label">3. Stop Sign Only:</span>
       <span class="value" id="noLine"></span>
     </div>
 
@@ -153,10 +190,12 @@
       <span class="label">Exact Wording:</span>
       <span class="value" id="exactWording"></span>
     </div>
+
   </div>
 
   <script>
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo8C9BcTbj974aAidWJoxLe9MWsIy2a0jHo16FnUMhSak8yGx0qRAYiEc85QB043UJV6uBBJ4KNMNc/pub?gid=425856129&single=true&output=csv';
+    const CSV_URL =
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQo8C9BcTbj974aAidWJoxLe9MWsIy2a0jHo16FnUMhSak8yGx0qRAYiEc85QB043UJV6uBBJ4KNMNc/pub?gid=425856129&single=true&output=csv';
 
     let data = [];
 
@@ -177,10 +216,18 @@
           } else {
             inQuotes = !inQuotes;
           }
-        } else if (char === ',' && !inQuotes) {
+        }
+
+        else if (char === ',' && !inQuotes) {
           row.push(field.trim());
           field = '';
-        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+        }
+
+        else if (
+          (char === '\n' || char === '\r') &&
+          !inQuotes
+        ) {
+
           if (char === '\r' && nextChar === '\n') {
             i++;
           }
@@ -193,7 +240,9 @@
 
           row = [];
           field = '';
-        } else {
+        }
+
+        else {
           field += char;
         }
       }
@@ -210,42 +259,73 @@
     fetch(CSV_URL)
       .then(response => response.text())
       .then(text => {
+
         data = parseCSV(text)
           .filter(row => row.length >= 9 && row[3]);
 
-        data.sort((a, b) => a[3].localeCompare(b[3]));
+        data.sort((a, b) =>
+          a[3].localeCompare(b[3])
+        );
 
-        const select = document.getElementById('stateSelect');
+        const select =
+          document.getElementById('stateSelect');
 
         data.forEach((row, index) => {
-          const option = document.createElement('option');
+
+          const option =
+            document.createElement('option');
+
           option.value = index;
           option.textContent = row[3];
+
           select.appendChild(option);
         });
       });
 
-    document.getElementById('stateSelect').addEventListener('change', function() {
-      const index = this.value;
+    document
+      .getElementById('stateSelect')
+      .addEventListener('change', function() {
 
-      if (index === '') {
-        document.getElementById('result').style.display = 'none';
-        return;
-      }
+        const index = this.value;
 
-      const row = data[index];
+        if (index === '') {
+          document.getElementById('result')
+            .style.display = 'none';
+          return;
+        }
 
-      document.getElementById('stateHeader').innerHTML =
-        row[3] + ' <span class="pop">' + row[2] + ' </span>';
+        const row = data[index];
 
-      document.getElementById('statuteName').textContent = row[4] || 'Not specified';
-      document.getElementById('exactWording').textContent = row[5] || 'Not specified';
-      document.getElementById('paintedLine').textContent = row[6] || 'Not specified';
-      document.getElementById('crosswalk').textContent = row[7] || 'Not specified';
-      document.getElementById('noLine').textContent = row[8] || 'Not specified';
+        document.getElementById('stateHeader')
+          .innerHTML =
+          row[3] +
+          ' <span class="pop">' +
+          row[2] +
+          '</span>';
 
-      document.getElementById('result').style.display = 'block';
-    });
+        document.getElementById('statuteName')
+          .textContent =
+          row[4] || 'Not specified';
+
+        document.getElementById('exactWording')
+          .textContent =
+          row[5] || 'Not specified';
+
+        document.getElementById('paintedLine')
+          .textContent =
+          row[6] || 'Not specified';
+
+        document.getElementById('crosswalk')
+          .textContent =
+          row[7] || 'Not specified';
+
+        document.getElementById('noLine')
+          .textContent =
+          row[8] || 'Not specified';
+
+        document.getElementById('result')
+          .style.display = 'block';
+      });
   </script>
 
 </body>
