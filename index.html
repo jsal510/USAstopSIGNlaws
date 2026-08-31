@@ -160,29 +160,63 @@
 
     let data = [];
 
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let field = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          row.push(field.trim());
+          field = '';
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (char === '\r' && nextChar === '\n') {
+            i++;
+          }
+
+          row.push(field.trim());
+
+          if (row.some(cell => cell !== '')) {
+            rows.push(row);
+          }
+
+          row = [];
+          field = '';
+        } else {
+          field += char;
+        }
+      }
+
+      row.push(field.trim());
+
+      if (row.some(cell => cell !== '')) {
+        rows.push(row);
+      }
+
+      return rows;
+    }
+
     fetch(CSV_URL)
       .then(response => response.text())
       .then(text => {
-        const rows = text.split('\n');
-        data = rows.map(row => {
-          const parsed = [];
-          let field = '';
-          let inQuotes = false;
-          for (let i = 0; i < row.length; i++) {
-            const char = row[i];
-            if (char === '"') inQuotes = !inQuotes;
-            else if (char === ',' && !inQuotes) {
-              parsed.push(field.trim());
-              field = '';
-            } else field += char;
-          }
-          parsed.push(field.trim());
-          return parsed;
-        }).filter(row => row.length >= 7 && row[3]);
+        data = parseCSV(text)
+          .filter(row => row.length >= 9 && row[3]);
 
         data.sort((a, b) => a[3].localeCompare(b[3]));
 
         const select = document.getElementById('stateSelect');
+
         data.forEach((row, index) => {
           const option = document.createElement('option');
           option.value = index;
@@ -193,13 +227,15 @@
 
     document.getElementById('stateSelect').addEventListener('change', function() {
       const index = this.value;
+
       if (index === '') {
         document.getElementById('result').style.display = 'none';
         return;
       }
+
       const row = data[index];
 
-      document.getElementById('stateHeader').innerHTML = 
+      document.getElementById('stateHeader').innerHTML =
         row[3] + ' <span class="pop">' + row[2] + ' </span>';
 
       document.getElementById('statuteName').textContent = row[4] || 'Not specified';
